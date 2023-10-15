@@ -10,4 +10,8 @@
     <ProjectReference Include="..\ShoppingList.Domain\ShoppingList.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Abstractions\IServices\" />
+  </ItemGroup>
+
 </Project>
