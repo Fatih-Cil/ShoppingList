@@ -1,3 +1,5 @@
+using FluentValidation.AspNetCore;
+using ShoppingList.Application.Validators.Categories;
 using ShoppingList.Persistence.IOC;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,7 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddPersistenceServiceIOC();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddFluentValidation(configuration => configuration.RegisterValidatorsFromAssemblyContaining<AddCategoryValidator>()); 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
