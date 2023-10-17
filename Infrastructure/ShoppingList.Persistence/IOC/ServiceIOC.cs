@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using ShoppingList.Application.Abstractions.IRepositories;
 using ShoppingList.Application.Abstractions.IServices;
 using ShoppingList.Persistence.Concrate.Managers;
@@ -19,6 +20,8 @@ namespace ShoppingList.Persistence.IOC
             services.AddSingleton<ICategoryService, CategoryManager>();
             services.AddSingleton<ICategoryRepository, EfCategoryRepository>();
 
+            services.AddSingleton<IUserService, UserManager>();
+            services.AddSingleton<IUserRepository, EfUserRepository>();
         }
     }
 }
