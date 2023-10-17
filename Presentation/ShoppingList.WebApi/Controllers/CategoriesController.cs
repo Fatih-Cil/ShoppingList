@@ -12,11 +12,12 @@ namespace ShoppingList.WebApi.Controllers
     public class CategoriesController : ControllerBase
     {
         ICategoryService _categoryService;
+        IProductService _productService;
 
-        public CategoriesController(ICategoryService categoryService)
+        public CategoriesController(ICategoryService categoryService, IProductService productService)
         {
             _categoryService = categoryService;
-
+            _productService = productService;
         }
 
         [HttpGet]
@@ -62,12 +63,15 @@ namespace ShoppingList.WebApi.Controllers
             return CreatedAtAction(nameof(GetById), new { id = result.Item1.Id }, addCategoryViewModel);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public IActionResult DeleteById(int id)
         {
             Category category = _categoryService.GetById(id);
             if (category == null) return NotFound("Kategori Bulunamadı");
 
+           var result= _productService.GetByCategoryId(id);
+            if (result.Count != 0) return NotFound("Bu kategoriye ait ürünler olduğu için silinemez.");
+            
             return (_categoryService.Delete(category))
                 ? NoContent() 
                 : StatusCode(StatusCodes.Status500InternalServerError);

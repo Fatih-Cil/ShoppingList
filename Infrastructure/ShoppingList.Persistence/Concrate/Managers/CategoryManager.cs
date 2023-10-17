@@ -13,42 +13,42 @@ namespace ShoppingList.Persistence.Concrate.Managers
     {
 
         ICategoryRepository _categoryRepository;
-
+       
         public CategoryManager(ICategoryRepository categoryRepository)
         {
             _categoryRepository = categoryRepository;
+            
         }
 
 
-        
 
-        public (Category, int kod,string message) Add(Category category)
+
+        public (Category, int kod, string message) Add(Category category)
         {
 
             var result = _categoryRepository.Get(x => x.Name.ToUpper() == category.Name.ToUpper());
-            
+
             if (result != null)
             {
-                return (result,0,"Bu isimde bir kategori var");
+                return (result, 0, "Bu isimde bir kategori var");
             }
 
             if (!_categoryRepository.Add(category))
             {
-                return (category,500, "Sunucu hatası! Kayıt yapılamadı");
+                return (category, 500, "Sunucu hatası! Kayıt yapılamadı");
             }
             else
             {
-                return (category, 201, "Kayıt başarılı");  
+                return (category, 201, "Kayıt başarılı");
             }
 
-            
+
 
         }
 
         public bool Delete(Category category)
         {
-           
-           return _categoryRepository.Delete(category);
+            return _categoryRepository.Delete(category);
         }
 
         public List<Category> GetAll()
@@ -81,7 +81,7 @@ namespace ShoppingList.Persistence.Concrate.Managers
             return _categoryRepository.Get(x => x.Id == Id);
         }
 
-       
+
 
         public Category GetByName(string name)
         {

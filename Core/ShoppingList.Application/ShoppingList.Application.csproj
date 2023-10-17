@@ -15,4 +15,9 @@
     <ProjectReference Include="..\ShoppingList.Domain\ShoppingList.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Validators\Products\" />
+    <Folder Include="ViewModels\ProductViewModel\" />
+  </ItemGroup>
+
 </Project>

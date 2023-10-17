@@ -22,6 +22,9 @@ namespace ShoppingList.Persistence.IOC
 
             services.AddSingleton<IUserService, UserManager>();
             services.AddSingleton<IUserRepository, EfUserRepository>();
+
+            services.AddSingleton<IProductService, ProductManager>();
+            services.AddSingleton<IProductRepository, EfProductRepository>();
         }
     }
 }

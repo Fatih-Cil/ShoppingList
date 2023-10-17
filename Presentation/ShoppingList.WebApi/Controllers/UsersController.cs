@@ -66,7 +66,7 @@ namespace ShoppingList.WebApi.Controllers
             return CreatedAtAction(nameof(GetById), new { id = result.Item1.Id }, addUserViewModel);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public IActionResult DeleteById(int id)
         {
             User user = _userService.GetById(id);

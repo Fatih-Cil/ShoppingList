@@ -71,8 +71,6 @@ namespace ShoppingList.Persistence.Concrate.Managers
                 return (user, 0, "Bu mail adresi başka bir kullanıcı tarafından kullanılıyor"); 
             }
 
-           
-
             if (!_userRepository.Update(user))
             {
                 return (user, 500, "Sunucu hatası! Güncelleme yapılamadı");
