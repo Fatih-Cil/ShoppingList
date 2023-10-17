@@ -13,8 +13,8 @@ namespace ShoppingList.Application.Abstractions.IServices
         Category GetById(int Id);
         Category GetByName(string Name);
         (Category ,int kod,string message) Add(Category category);
-        void Delete(Category category);
-        bool Update(Category category);
+        bool Delete(Category category);
+        (Category, int kod, string message) Update(Category category);
         
     }
 }

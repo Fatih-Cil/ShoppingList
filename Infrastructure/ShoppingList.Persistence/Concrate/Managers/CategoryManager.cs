@@ -20,15 +20,7 @@ namespace ShoppingList.Persistence.Concrate.Managers
         }
 
 
-        public bool IsCategoryNameDuplicated(string name)
-        {
-            Category result = _categoryRepository.Get(x => x.Name == name);
-            if (result == null)
-            {
-                return false;
-            }
-            return true;
-        }
+        
 
         public (Category, int kod,string message) Add(Category category)
         {
@@ -53,10 +45,10 @@ namespace ShoppingList.Persistence.Concrate.Managers
 
         }
 
-        public void Delete(Category category)
+        public bool Delete(Category category)
         {
            
-            _categoryRepository.Delete(category);
+           return _categoryRepository.Delete(category);
         }
 
         public List<Category> GetAll()
@@ -64,19 +56,24 @@ namespace ShoppingList.Persistence.Concrate.Managers
             return _categoryRepository.GetAll();
         }
 
-        public bool Update(Category category)
+        public (Category, int kod, string message) Update(Category category)
         {
             var result = _categoryRepository.Get(x => x.Name.ToUpper() == category.Name.ToUpper());
+
             if (result != null)
             {
-                return false;
+                return (result, 0, "Bu isimde bir kategori var");
+            }
+
+            if (!_categoryRepository.Update(category))
+            {
+                return (category, 500, "Sunucu hatası! Güncelleme yapılamadı");
             }
             else
             {
-                _categoryRepository.Update(category);
-                return true;
-            };
+                return (category, 200, "Güncelleme başarılı");
 
+            }
         }
 
         public Category GetById(int Id)
