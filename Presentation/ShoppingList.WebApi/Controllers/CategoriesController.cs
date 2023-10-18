@@ -56,6 +56,7 @@ namespace ShoppingList.WebApi.Controllers
             category.Name = addCategoryViewModel.Name;
 
             var result = _categoryService.Add(category);
+
             if (result.kod == 0) return NotFound(result.message);
 
             if (result.kod == 500) return StatusCode(StatusCodes.Status500InternalServerError);
@@ -69,14 +70,14 @@ namespace ShoppingList.WebApi.Controllers
             Category category = _categoryService.GetById(id);
             if (category == null) return NotFound("Kategori Bulunamadı");
 
-           var result= _productService.GetProductByCategoryId(id);
+            var result = _productService.GetProductByCategoryId(id);
             if (result.Count != 0) return NotFound("Bu kategoriye ait ürünler olduğu için silinemez.");
-            
+
             return (_categoryService.Delete(category))
-                ? NoContent() 
+                ? NoContent()
                 : StatusCode(StatusCodes.Status500InternalServerError);
 
-            
+
         }
 
         [HttpPut("{id}")]

@@ -39,17 +39,19 @@ namespace ShoppingList.Persistence.Concrate.Managers
 
         public bool Delete(User user)
         {
-            return _userRepository.Delete(user);
+            // return _userRepository.Delete(user);
+            //kullanıcı status false olarak güncelleniyor.
+            return _userRepository.Update(user);
         }
 
         public List<User> GetAll()
         {
-           return _userRepository.GetAll();
+            return _userRepository.GetAll();
         }
 
         public List<User> GetByActiveAll(bool status)
         {
-            return _userRepository.GetAll(x=>x.Status == status);
+            return _userRepository.GetAll(x => x.Status == status);
         }
 
         public User GetById(int Id)
@@ -59,16 +61,16 @@ namespace ShoppingList.Persistence.Concrate.Managers
 
         public User GetByMail(string mail)
         {
-          return  _userRepository.Get(x=>x.Email == mail);
-           
+            return _userRepository.Get(x => x.Email == mail);
+
         }
 
         public (User, int kod, string message) Update(User user)
         {
             User result = GetByMail(user.Email);
-            if (result != null && result.Id!=user.Id) 
-            { 
-                return (user, 0, "Bu mail adresi başka bir kullanıcı tarafından kullanılıyor"); 
+            if (result != null && result.Id != user.Id)
+            {
+                return (user, 0, "Bu mail adresi başka bir kullanıcı tarafından kullanılıyor");
             }
 
             if (!_userRepository.Update(user))
