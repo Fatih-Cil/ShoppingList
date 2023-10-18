@@ -69,7 +69,7 @@ namespace ShoppingList.WebApi.Controllers
             Category category = _categoryService.GetById(id);
             if (category == null) return NotFound("Kategori Bulunamadı");
 
-           var result= _productService.GetByCategoryId(id);
+           var result= _productService.GetProductByCategoryId(id);
             if (result.Count != 0) return NotFound("Bu kategoriye ait ürünler olduğu için silinemez.");
             
             return (_categoryService.Delete(category))

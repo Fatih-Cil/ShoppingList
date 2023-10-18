@@ -48,6 +48,7 @@ namespace ShoppingList.WebApi.Controllers
                 return BadRequest(ModelState);
             }
 
+
             User user = new User();
             user.Name = addUserViewModel.Name;
             user.Surname = addUserViewModel.Surname;

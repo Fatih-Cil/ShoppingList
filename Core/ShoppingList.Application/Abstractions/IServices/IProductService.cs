@@ -11,7 +11,8 @@ namespace ShoppingList.Application.Abstractions.IServices
     {
         List<Product> GetAll();
         Product GetById(int Id);
-        List<Product> GetByCategoryId(int Id);
+        Product GetByName(string name);
+        List<Product> GetProductByCategoryId(int Id);
         (Product, int kod, string message) Add(Product product);
         bool Delete(Product product);
         (Product, int kod, string message) Update(Product product);
