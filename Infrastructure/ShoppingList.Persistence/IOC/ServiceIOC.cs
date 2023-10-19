@@ -16,6 +16,7 @@ namespace ShoppingList.Persistence.IOC
     {
         public static void AddPersistenceServiceIOC(this IServiceCollection services)
         {
+            services.AddSingleton<IAuthService, AuthManager>();
 
             services.AddSingleton<ICategoryService, CategoryManager>();
             services.AddSingleton<ICategoryRepository, EfCategoryRepository>();

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingList.Application.Abstractions.IServices;
 
@@ -72,8 +73,8 @@ namespace ShoppingList.WebApi.Controllers
         {
             User user = _userService.GetById(id);
             if (user == null) return NotFound("Kullanıcı bulunamadı");
-            
-            user.Status=false;
+
+            user.Status = false;
 
             return (_userService.Delete(user))
                 ? NoContent()
@@ -89,7 +90,7 @@ namespace ShoppingList.WebApi.Controllers
             }
             User user = _userService.GetById(id);
             if (user == null) return NotFound("Kullanıcı bulunamadı");
-            
+
 
             user.Id = id;
             user.Name = updateUserViewModel.Name;
