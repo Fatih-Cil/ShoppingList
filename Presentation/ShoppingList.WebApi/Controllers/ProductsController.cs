@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingList.Application.Abstractions.IServices;
 using ShoppingList.Application.ViewModels.CategoryViewModel;
@@ -18,6 +19,7 @@ namespace ShoppingList.WebApi.Controllers
             _productService = productService;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -42,7 +44,7 @@ namespace ShoppingList.WebApi.Controllers
 
         }
 
-        
+
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
@@ -57,19 +59,19 @@ namespace ShoppingList.WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(AddProductViewModel addProductViewModel) 
+        public IActionResult Add(AddProductViewModel addProductViewModel)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            Product product=new Product();
-            product.CategoryId= addProductViewModel.CategoryId;
-            product.Name= addProductViewModel.Name;
-            product.UrlImage= addProductViewModel.UrlImage;
+            Product product = new Product();
+            product.CategoryId = addProductViewModel.CategoryId;
+            product.Name = addProductViewModel.Name;
+            product.UrlImage = addProductViewModel.UrlImage;
 
-            var result=_productService.Add(product);
+            var result = _productService.Add(product);
 
             if (result.kod == 0) return NotFound(result.message);
 
