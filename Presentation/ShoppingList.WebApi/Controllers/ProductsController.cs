@@ -19,7 +19,7 @@ namespace ShoppingList.WebApi.Controllers
             _productService = productService;
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,User")]
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -32,6 +32,7 @@ namespace ShoppingList.WebApi.Controllers
 
         }
 
+        [Authorize(Roles = "Admin,User")]
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
@@ -45,7 +46,7 @@ namespace ShoppingList.WebApi.Controllers
         }
 
 
-
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
@@ -58,6 +59,7 @@ namespace ShoppingList.WebApi.Controllers
 
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult Add(AddProductViewModel addProductViewModel)
         {
@@ -80,6 +82,7 @@ namespace ShoppingList.WebApi.Controllers
             return CreatedAtAction(nameof(GetById), new { id = result.Item1.Id }, addProductViewModel);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public IActionResult Update(int id, UpdateProductViewModel updateProductViewModel)
         {

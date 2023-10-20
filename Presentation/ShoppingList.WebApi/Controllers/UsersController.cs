@@ -74,8 +74,6 @@ namespace ShoppingList.WebApi.Controllers
             User user = _userService.GetById(id);
             if (user == null) return NotFound("Kullanıcı bulunamadı");
 
-            user.Status = false;
-
             return (_userService.Delete(user))
                 ? NoContent()
                 : StatusCode(StatusCodes.Status500InternalServerError);

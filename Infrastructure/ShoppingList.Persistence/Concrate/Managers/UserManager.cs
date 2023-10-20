@@ -41,6 +41,7 @@ namespace ShoppingList.Persistence.Concrate.Managers
         {
             // return _userRepository.Delete(user);
             //kullanıcı status false olarak güncelleniyor.
+            user.Status = false;
             return _userRepository.Update(user);
         }
 
