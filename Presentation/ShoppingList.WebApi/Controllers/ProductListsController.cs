@@ -95,7 +95,7 @@ namespace ShoppingList.WebApi.Controllers
 
 
             var result = _productListService.Update(productList);
-
+            if (result.kod == 0) return NotFound(result.message);
 
             if (result.kod == 500) return StatusCode(StatusCodes.Status500InternalServerError);
 
