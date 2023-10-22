@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingList.Application.Abstractions.IServices;
+using ShoppingList.Application.DTOs;
 using ShoppingList.Application.ViewModels.CategoryViewModel;
 using ShoppingList.Application.ViewModels.ProductViewModel;
 using ShoppingList.Domain.Entities;
@@ -24,7 +25,7 @@ namespace ShoppingList.WebApi.Controllers
         public IActionResult GetAll()
         {
 
-            List<Product> result = _productService.GetAll();
+            List<ProductDetailDTO> result = _productService.GetAll();
 
             return (result.Count == 0)
                  ? NotFound("Ürün bulunamadı")
@@ -38,6 +39,19 @@ namespace ShoppingList.WebApi.Controllers
         {
 
             Product result = _productService.GetById(id);
+
+            return (result == null)
+                 ? NotFound("Ürün bulunamadı")
+                 : Ok(result);
+
+        }
+
+
+        [HttpGet("ProductDatail/{id}")]
+        public IActionResult GetBydDetailId(int id)
+        {
+
+            ProductDetailDTO result = _productService.GetByDetailId(id);
 
             return (result == null)
                  ? NotFound("Ürün bulunamadı")

@@ -1,5 +1,6 @@
 ﻿using ShoppingList.Application.Abstractions.IRepositories;
 using ShoppingList.Application.Abstractions.IServices;
+using ShoppingList.Application.DTOs;
 using ShoppingList.Domain.Entities;
 using ShoppingList.Persistence.Concrate.Repositories;
 using System;
@@ -21,13 +22,21 @@ namespace ShoppingList.Persistence.Concrate.Managers
             _categoryService = categoryService;
         }
 
-        public List<Product> GetAll()
+        public List<ProductDetailDTO> GetAll()
         {
-            return _productRepository.GetAll();
+            return _productRepository.GetAllProductDetails();
+            //return _productRepository.GetAll();
+        }
+
+        public ProductDetailDTO GetByDetailId(int Id)
+        {
+            return _productRepository.GetProductDetail(Id);
+            //return _productRepository.Get(x => x.Id == Id);
         }
 
         public Product GetById(int Id)
         {
+            
             return _productRepository.Get(x => x.Id == Id);
         }
 

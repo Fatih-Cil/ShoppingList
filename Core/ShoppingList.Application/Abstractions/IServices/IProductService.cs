@@ -1,4 +1,5 @@
-﻿using ShoppingList.Domain.Entities;
+﻿using ShoppingList.Application.DTOs;
+using ShoppingList.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,10 @@ namespace ShoppingList.Application.Abstractions.IServices
 {
     public interface IProductService
     {
-        List<Product> GetAll();
+        //List<Product> GetAll();
+        public List<ProductDetailDTO> GetAll();
         Product GetById(int Id);
+        ProductDetailDTO GetByDetailId(int Id);
         Product GetByName(string name);
         List<Product> GetProductByCategoryId(int Id);
         (Product, int kod, string message) Add(Product product);

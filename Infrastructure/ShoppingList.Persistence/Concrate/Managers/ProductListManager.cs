@@ -1,5 +1,6 @@
 ﻿using ShoppingList.Application.Abstractions.IRepositories;
 using ShoppingList.Application.Abstractions.IServices;
+using ShoppingList.Application.DTOs;
 using ShoppingList.Domain.Entities;
 using ShoppingList.Persistence.Concrate.Repositories;
 using System;
@@ -56,6 +57,12 @@ namespace ShoppingList.Persistence.Concrate.Managers
         public List<ProductList> GetAllProductListByListId(int listId)
         {
             return _productListRepository.GetAll(x => x.ListId == listId);
+        }
+
+
+        public List<ProductListDetailDTO> GetAllProductListDetailId(int listId)
+        {
+            return _productListRepository.GetAllProductListDetails(listId);
         }
 
         public ProductList GetById(int Id)

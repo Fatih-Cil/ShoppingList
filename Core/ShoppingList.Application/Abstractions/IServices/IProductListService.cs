@@ -1,4 +1,5 @@
-﻿using ShoppingList.Domain.Entities;
+﻿using ShoppingList.Application.DTOs;
+using ShoppingList.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace ShoppingList.Application.Abstractions.IServices
         List<ProductList> GetAll();
         ProductList GetById(int Id);
         List<ProductList> GetAllProductListByListId(int listId);
+
+        public List<ProductListDetailDTO> GetAllProductListDetailId(int listId);
         (ProductList, int kod, string message) Add(ProductList productList);
         bool Delete(ProductList productList);
         (ProductList, int kod, string message) Update(ProductList productList);

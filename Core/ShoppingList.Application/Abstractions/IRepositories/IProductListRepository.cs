@@ -1,4 +1,5 @@
-﻿using ShoppingList.Domain.Entities;
+﻿using ShoppingList.Application.DTOs;
+using ShoppingList.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,6 @@ namespace ShoppingList.Application.Abstractions.IRepositories
 {
     public interface IProductListRepository : IEntityRepository<ProductList>
     {
+        List<ProductListDetailDTO> GetAllProductListDetails(int listId);
     }
 }
