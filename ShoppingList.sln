@@ -5,19 +5,21 @@ VisualStudioVersion = 17.7.34003.232
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{7DBA3FAE-DB9C-4B0D-ADE5-B81408E69D97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingList.Application", "Core\ShoppingList.Application\ShoppingList.Application.csproj", "{798DF628-11C0-4C31-884D-2FA3C949ED23}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingList.Application", "Core\ShoppingList.Application\ShoppingList.Application.csproj", "{798DF628-11C0-4C31-884D-2FA3C949ED23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingList.Domain", "Core\ShoppingList.Domain\ShoppingList.Domain.csproj", "{D0BB2A1A-596E-4165-BCC1-48A7CB0D7476}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingList.Domain", "Core\ShoppingList.Domain\ShoppingList.Domain.csproj", "{D0BB2A1A-596E-4165-BCC1-48A7CB0D7476}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{CC673854-F640-4F6A-A448-B368E75F6598}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingList.Infrastructure", "Infrastructure\ShoppingList.Infrastructure\ShoppingList.Infrastructure.csproj", "{FB10CB49-7958-4E27-9E37-CBABC74EEF74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingList.Infrastructure", "Infrastructure\ShoppingList.Infrastructure\ShoppingList.Infrastructure.csproj", "{FB10CB49-7958-4E27-9E37-CBABC74EEF74}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingList.Persistence", "Infrastructure\ShoppingList.Persistence\ShoppingList.Persistence.csproj", "{4F9DBAF8-E17B-4643-99D8-B9AFDCC90E44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingList.Persistence", "Infrastructure\ShoppingList.Persistence\ShoppingList.Persistence.csproj", "{4F9DBAF8-E17B-4643-99D8-B9AFDCC90E44}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{037CB11B-FE37-4FB8-8DD9-EA2692A3121C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingList.WebApi", "Presentation\ShoppingList.WebApi\ShoppingList.WebApi.csproj", "{309C15BD-731D-4A85-B1C2-FA998C042590}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingList.WebApi", "Presentation\ShoppingList.WebApi\ShoppingList.WebApi.csproj", "{309C15BD-731D-4A85-B1C2-FA998C042590}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingList.WebMVC", "ShoppingList.WebMVC\ShoppingList.WebMVC.csproj", "{80DFB324-1FBE-4C1D-A8C8-54BF3EEF107E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{309C15BD-731D-4A85-B1C2-FA998C042590}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{309C15BD-731D-4A85-B1C2-FA998C042590}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{309C15BD-731D-4A85-B1C2-FA998C042590}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80DFB324-1FBE-4C1D-A8C8-54BF3EEF107E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80DFB324-1FBE-4C1D-A8C8-54BF3EEF107E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80DFB324-1FBE-4C1D-A8C8-54BF3EEF107E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80DFB324-1FBE-4C1D-A8C8-54BF3EEF107E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +61,7 @@ Global
 		{FB10CB49-7958-4E27-9E37-CBABC74EEF74} = {CC673854-F640-4F6A-A448-B368E75F6598}
 		{4F9DBAF8-E17B-4643-99D8-B9AFDCC90E44} = {CC673854-F640-4F6A-A448-B368E75F6598}
 		{309C15BD-731D-4A85-B1C2-FA998C042590} = {037CB11B-FE37-4FB8-8DD9-EA2692A3121C}
+		{80DFB324-1FBE-4C1D-A8C8-54BF3EEF107E} = {037CB11B-FE37-4FB8-8DD9-EA2692A3121C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AA718463-441D-43BD-8D5A-6E9DCED6F9C3}

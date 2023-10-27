@@ -29,6 +29,7 @@ namespace ShoppingList.WebApi.Controllers
             return (result.Count == 0)
                  ? NotFound("Kategor bulunamadı")
                  : Ok(result);
+            
 
         }
 

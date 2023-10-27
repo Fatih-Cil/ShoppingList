@@ -61,7 +61,7 @@ namespace ShoppingList.WebApi.Controllers
 
 
             var result = _userService.Add(user);
-            if (result.kod == 0) return NotFound(result.message);
+            if (result.kod == 0) return NotFound();
 
             if (result.kod == 500) return StatusCode(StatusCodes.Status500InternalServerError);
 

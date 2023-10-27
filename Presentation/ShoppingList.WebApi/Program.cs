@@ -12,6 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddPersistenceServiceIOC();
 
+builder.Host.UseWindowsService();
+
 builder.Services.AddControllers()
     .AddFluentValidation(configuration => configuration.RegisterValidatorsFromAssemblyContaining<AddCategoryValidator>()); 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

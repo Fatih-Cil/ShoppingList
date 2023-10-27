@@ -20,7 +20,14 @@ namespace ShoppingList.Persistence.Concrate.Managers
 
         public User LoginCheck(User user)
         {
-          return  _userRepository.Get(x => x.Email == user.Email && x.Password == user.Password && user.Status==true);
+            User resultUser = _userRepository.Get(x => x.Email == user.Email && x.Status == true);
+            if (resultUser == null) { return resultUser; }
+            if (string.Equals(user.Password, resultUser.Password, StringComparison.Ordinal))
+            {
+                return resultUser;
+            }
+            resultUser = null;
+            return resultUser;
         }
     }
 }

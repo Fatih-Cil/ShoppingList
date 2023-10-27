@@ -1,0 +1,70 @@
+﻿@using ShoppingList.Application.ViewModels.AuthViewModel;
+
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = null;
+}
+@model LoginViewModel
+
+
+<div class="container ">
+
+   
+    <div class="row justify-content-center align-items-center" style="height: 100vh;">
+        <div class="col-md-6">
+            <div>
+                @{
+                    if (TempData["Error"] is not null)
+                    {
+
+                        <div class="alert alert-danger" role="alert">
+                            @TempData["Error"]
+                        </div>
+                    }
+
+                }
+                <div class="card bg-black text-white">
+                    <div class="card-body">
+                        <form asp-controller="Login" asp-action="Index" method="post">
+                            <div class="mb-3">
+
+
+                                <label for="exampleInputEmail1" class="form-label">Email</label>
+                                <input type="email" class="form-control" asp-for="Email">
+
+                            </div>
+                            <p class="text-danger"><span asp-validation-for="Email"></span></p>
+
+                            <div class="mb-3">
+                                <label for="exampleInputPassword1" class="form-label">Şifre</label>
+                                <input type="password" class="form-control" asp-for="Password">
+                            </div>
+                            <p class="text-danger"><span asp-validation-for="Password"></span></p>
+
+
+                            <div class="row justify-content-center align-items-center">
+                                <div class="col-sm-6 col-md-6 d-flex justify-content-start"><button type="submit" class="btn btn-primary">GİRİŞ</button></div>
+                                <div class="col-6 col-md-6 d-flex justify-content-end">
+                                    
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row justify-content-center align-items-center">
+                                <div class="col-sm-6 col-md-6 d-flex justify-content-start"></div>
+                                <div class="col-6 col-md-6 d-flex justify-content-end">
+                                    <p>Üye değil misiniz?  <a asp-action="Register" asp-controller="Login" class="link-warning link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Üye Ol</a></p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
