@@ -1,0 +1,47 @@
+﻿
+@using ShoppingList.WebMVC.Models.ViewModels.CategoryViewModel;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@model UpdateCategoryViewModel
+
+@{
+    if (TempData["response"] is not null)
+    {
+        <p>@TempData["response"]</p>
+        <p>@TempData["url"]</p>
+        <p>@TempData["HATA"]</p>
+    }
+}
+<h1>Kategori Düzenle</h1><br />
+
+<div class="container"></div>
+@{
+    if (TempData["Error"] is not null)
+    {
+
+        <div class="alert alert-danger" role="alert">
+            @TempData["Error"]
+        </div>
+    }
+    
+}
+<div class="card">
+    <div class="card-body">
+        <form asp-action="edit" asp-controller="Categories" asp-area="AdminPanel"  method="post">
+            <div class="mb-3">
+                <label class="form-label">Id</label>
+                <input asp-for=Id type="text" class="form-control" value="@Model.Id" disabled>
+            </div>
+            <div class="mb-3">
+                <label  class="form-label">Kategori Adı</label>
+                <input asp-for=Name type="text" class="form-control" value="@Model.Name">
+            </div><p class="text-danger"><span asp-validation-for="Name"></span></p>
+            
+            <button type="submit" class="btn btn-warning">Düzenle</button>
+        </form>
+    </div>
+</div>
+

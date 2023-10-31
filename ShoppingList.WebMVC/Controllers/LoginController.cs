@@ -7,7 +7,10 @@ using Newtonsoft.Json;
 using ShoppingList.Application.ViewModels.AuthViewModel;
 using ShoppingList.Application.ViewModels.UserViewModel;
 using ShoppingList.Domain.Entities;
+using ShoppingList.WebMVC.Models;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Json.Nodes;
 using System.Windows.Markup;
@@ -42,11 +45,25 @@ namespace ShoppingList.WebMVC.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                string token = await response.Content.ReadAsStringAsync();
-                TempData["Token"] = token;
-                return RedirectToAction("Index", "Home");
+                string jwt = await response.Content.ReadAsStringAsync();
 
+                TempData["Token"] = jwt;
+                var handler = new JwtSecurityTokenHandler();
+                var token = handler.ReadJwtToken(jwt);
+                var roleClaim = token.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Role);
+                if (roleClaim != null)
+                {
+                   
+                        return RedirectToAction("Index", "Home", new { area = roleClaim.Value+"Panel" });
+                    
+                }
+
+                TempData["Role"] = "Token role değerine ulaşılamadı";
+                return View(loginViewModel);
+                
             }
+
+
 
             var jsonString = await response.Content.ReadAsStringAsync();
             var validation = JsonConvert.DeserializeObject<ErrorResponse>(jsonString);
@@ -126,14 +143,14 @@ namespace ShoppingList.WebMVC.Controllers
         }
 
 
-        public class ErrorResponse
-        {
-            public string type { get; set; }
-            public string title { get; set; }
-            public int status { get; set; }
-            public string traceId { get; set; }
-            public Dictionary<string, List<string>> errors { get; set; }
-        }
+        //public class ErrorResponse
+        //{
+        //    public string type { get; set; }
+        //    public string title { get; set; }
+        //    public int status { get; set; }
+        //    public string traceId { get; set; }
+        //    public Dictionary<string, List<string>> errors { get; set; }
+        //}
 
     }
 }
