@@ -1,11 +1,12 @@
 ﻿
-@using ShoppingList.WebMVC.Models.ViewModels.CategoryViewModel;
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using ShoppingList.WebMVC.Areas.AdminPanel.Models.CategoryVM;
+
+
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-@model UpdateCategoryViewModel
+@model UpdateCategoryVM
 
 @{
     if (TempData["response"] is not null)

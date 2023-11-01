@@ -1,5 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -142,15 +141,6 @@ namespace ShoppingList.WebMVC.Controllers
 
         }
 
-
-        //public class ErrorResponse
-        //{
-        //    public string type { get; set; }
-        //    public string title { get; set; }
-        //    public int status { get; set; }
-        //    public string traceId { get; set; }
-        //    public Dictionary<string, List<string>> errors { get; set; }
-        //}
 
     }
 }

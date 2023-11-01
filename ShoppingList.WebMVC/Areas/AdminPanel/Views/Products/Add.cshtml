@@ -1,0 +1,45 @@
+﻿@using ShoppingList.Domain.Entities;
+@using ShoppingList.WebMVC.Areas.AdminPanel.Models.ProductVM;
+
+@{
+    ViewData["Title"] = "Add";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Ürün Ekle</h1>
+
+<div class="container"></div>
+@{
+    if (TempData["Error"] is not null)
+    {
+
+        <div class="alert alert-danger" role="alert">
+            @TempData["Error"]
+        </div>
+    }
+
+}
+
+<div class="card">
+    <div class="card-body">
+        <form asp-action="add" asp-controller="Products" asp-area="AdminPanel" method="post">
+
+            <div class="mb-3">
+                <label class="form-label">Kategori Adı</label>
+                @Html.DropDownList("SecilenKategori",TempData["CategoryList"] as SelectList, "Lütfen bir kategori seçiniz",new { @class = "form-control" })
+            </div><p class="text-danger"><span></span></p>
+         
+
+            
+
+            <div class="mb-3">
+                <label class="form-label">Ürün Adı</label>
+                <input  type="text" class="form-control">
+            </div><p class="text-danger"><span ></span></p>
+
+            <button type="submit" class="btn btn-primary">Ekle</button>
+        </form>
+
+
+    </div>
+</div>

@@ -1,0 +1,36 @@
+﻿@using ShoppingList.WebMVC.Areas.AdminPanel.Models.CategoryVM;
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@model DeleteCategoryVM
+<h1>Delete</h1>
+
+<div class="container"></div>
+@{
+    if (TempData["Error"] is not null)
+    {
+
+        <div class="alert alert-danger" role="alert">
+            @TempData["Error"]
+        </div>
+    }
+
+}
+<div class="card">
+    <div class="card-body">
+        <form asp-action="delete"  asp-controller="Categories" asp-area="AdminPanel" method="post">
+            <div class="mb-3">
+                <label class="form-label">Id</label>
+                <input asp-for=@Model.Id type="text" class="form-control" value="@Model.Id" disabled>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Kategori Adı</label>
+                <input asp-for=@Model.Name type="text" class="form-control" value="@Model.Name" disabled>
+            </div><p class="text-danger"><span asp-validation-for="Name"></span></p>
+
+            <button type="submit" class="btn btn-danger">Sil</button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,47 @@
+﻿@using ShoppingList.WebMVC.Areas.AdminPanel.Models.ProductVM;
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@model List<ProductDetailDTOVM>
+<h1>Ürün İşlemleri</h1>
+
+<div class="container">
+    <p><a class="btn btn-primary" asp-action="add" asp-controller="Products" asp-area="AdminPanel" role="button">Ürün Ekle</a></p>
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">İmage</th>
+                        <th scope="col">Ürün Adı</th>
+                        <th scope="col">Kategori Adı</th>
+                        <th scope="col">İşlem</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var product in Model)
+                    {
+                        <tr>
+                            <th scope="row">@product.Id</th>
+                            <td scope="row">@product.UrlImage</td>
+                            <td>@product.Name</td>
+                            <td>@product.CategoryName</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@product.Id" asp-controller="Products" asp-area="AdminPanel" class="link-warning link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Düzenle</a>
+                                |
+                                <a asp-action="Delete" asp-route-id="@product.Id" asp-controller="Products" asp-area="AdminPanel" class="link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Sil</a>
+                            </td>
+
+                        </tr>
+                    }
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

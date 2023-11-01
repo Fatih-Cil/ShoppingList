@@ -14,8 +14,16 @@
 <h1>Kategori İşlemleri</h1><br />
 
 <div class="container">
-    <p><a class="btn btn-primary" href="#" role="button">Kategori Ekle</a></p>
+    <p><a class="btn btn-primary" asp-action="add" asp-controller="Categories" asp-area="AdminPanel" role="button">Kategori Ekle</a></p>
     <div class="card">
+        @{
+            if (TempData["Error"] is not null)
+            {
+                <div class="alert alert-danger" role="alert">
+                    @TempData["Error"]
+                </div>
+            }
+        }
         <div class="card-body">
             <table class="table table-striped">
                 <thead>
@@ -35,7 +43,7 @@
                             <td>
                                 <a asp-action="Edit" asp-route-id="@category.Id" asp-controller="Categories" asp-area="AdminPanel" class="link-warning link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Düzenle</a>
                                 |
-                                <a asp-action="Edit" asp-route-id="@category.Id" asp-controller="Categories" asp-area="AdminPanel" class="link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Sil</a>
+                                <a asp-action="Delete" asp-route-id="@category.Id" asp-controller="Categories" asp-area="AdminPanel" class="link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Sil</a>
                             </td>
 
                         </tr>

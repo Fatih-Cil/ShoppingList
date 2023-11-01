@@ -18,17 +18,17 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarText">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        
+                        <li class="nav-item">
+                            <a class="nav-link" asp-action="index" asp-controller="Home" asp-area="AdminPanel">Dashboard</a>
+                        </li>
                         
                         <li class="nav-item">
                             <a class="nav-link" aria-current="page" asp-action="index" asp-controller="categories" asp-area="AdminPanel">Kategori İşlemleri</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Ürün İşlemleri</a>
+                            <a class="nav-link" asp-action="index" asp-controller="products" asp-area="AdminPanel">Ürün İşlemleri</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Pricing</a>
-                        </li>
+                        
                     </ul>
                     <span class="navbar-text">
                         @await RenderSectionAsync("UserName", required: false)
