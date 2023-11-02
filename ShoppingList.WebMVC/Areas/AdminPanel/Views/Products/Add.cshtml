@@ -5,7 +5,7 @@
     ViewData["Title"] = "Add";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
+@model AddProductVM
 <h1>Ürün Ekle</h1>
 
 <div class="container"></div>
@@ -22,20 +22,31 @@
 
 <div class="card">
     <div class="card-body">
+
+
+        
+
+
         <form asp-action="add" asp-controller="Products" asp-area="AdminPanel" method="post">
 
+        
             <div class="mb-3">
                 <label class="form-label">Kategori Adı</label>
-                @Html.DropDownList("SecilenKategori",TempData["CategoryList"] as SelectList, "Lütfen bir kategori seçiniz",new { @class = "form-control" })
-            </div><p class="text-danger"><span></span></p>
-         
-
-            
+                <select class="form-select digits" required="" asp-for="@Model.Category.Id"
+                        asp-items="@(new SelectList(Model.CategoryList,"Id","Name"))">
+                    <option>Kategori Seçin...</option>
+                </select>
+            </div><p class="text-danger"><span asp-validation-for="CategoryId"></span></p>
+        
 
             <div class="mb-3">
                 <label class="form-label">Ürün Adı</label>
-                <input  type="text" class="form-control">
-            </div><p class="text-danger"><span ></span></p>
+                <input asp-for=Name type="text" class="form-control">
+            </div><p class="text-danger"><span asp-validation-for="Name"></span></p>
+            <div class="mb-3">
+                <label class="form-label">Image Yolu</label>
+                <input asp-for=UrlImage type="text" class="form-control">
+            </div><p class="text-danger"><span asp-validation-for="UrlImage"></span></p>
 
             <button type="submit" class="btn btn-primary">Ekle</button>
         </form>

@@ -22,7 +22,7 @@ namespace ShoppingList.Application.Validators.Products
             RuleFor(x => x.UrlImage)
                 .NotEmpty().WithMessage("Görsel link adresi boş geçilemez")
                 .NotNull().WithMessage("Görsel link adresi boş geçilemez")
-                .Length(2, 250).WithMessage("Ürün adı en az 2 en çok 250 karakter olmalı"); ;
+                .Length(2, 250).WithMessage("Görselin dosya yolu en az 2 en çok 250 karakter olmalı"); ;
 
         }
     }
