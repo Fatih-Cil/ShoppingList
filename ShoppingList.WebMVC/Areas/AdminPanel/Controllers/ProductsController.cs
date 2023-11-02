@@ -106,5 +106,64 @@ namespace ShoppingList.WebMVC.Areas.AdminPanel.Controllers
 
             return RedirectToAction("Add", "Products");
         }
+
+        [HttpGet("Admin/Products/Delete/{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var httpClient = new HttpClient();
+            var responseMessage = await httpClient.GetStringAsync("https://localhost:44344/api/Products/" + id);
+            var values = JsonConvert.DeserializeObject<ProductDetailDTOVM>(responseMessage);
+
+            return View(values);
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(ProductDetailDTOVM productDetailDTOVM)
+        {
+
+
+            string url = "https://localhost:44344/api/Products/" + productDetailDTOVM.Id;
+            HttpClient client = new HttpClient();
+            var jsonCategory = JsonConvert.SerializeObject(productDetailDTOVM);
+            var content = new StringContent(jsonCategory, Encoding.UTF8, "application/json");
+            var response = await client.DeleteAsync(url);
+
+            if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+            {
+                return RedirectToAction("Index", "Products");
+
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                string errorMessage = await response.Content.ReadAsStringAsync();
+                TempData["Error"] = errorMessage;
+                return RedirectToAction("Index", "Products");
+            }
+
+            else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+            {
+                string errorMessage = await response.Content.ReadAsStringAsync();
+                TempData["Error"] = errorMessage;
+                return View(productDetailDTOVM);
+            }
+            else if (response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var validation = JsonConvert.DeserializeObject<ErrorResponse>(jsonString);
+                foreach (var key in validation.errors.Keys)
+                {
+                    foreach (var error in validation.errors[key])
+                    {
+                        ModelState.AddModelError(key, error);
+                    }
+
+                }
+
+                return View(productDetailDTOVM);
+            }
+            return View(productDetailDTOVM);
+
+        }
     }
 }
