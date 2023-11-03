@@ -165,5 +165,80 @@ namespace ShoppingList.WebMVC.Areas.AdminPanel.Controllers
             return View(productDetailDTOVM);
 
         }
+
+
+        [HttpGet("Admin/Products/Edit/{id}")]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var httpClient = new HttpClient();
+
+            var responseMessage = await httpClient.GetAsync("https://localhost:44344/api/Categories/");
+            var jsonString = await responseMessage.Content.ReadAsStringAsync();
+            var values = JsonConvert.DeserializeObject<List<Category>>(jsonString);
+
+            var responseMessage2 = await httpClient.GetAsync("https://localhost:44344/api/Products/"+id);
+            var jsonString2 = await responseMessage2.Content.ReadAsStringAsync();
+            var values2 = JsonConvert.DeserializeObject<AddProductVM>(jsonString2);
+
+            UpdateProductVM updateProductVM = new UpdateProductVM();
+            updateProductVM.Name = values2.Name;
+            updateProductVM.UrlImage=values2.UrlImage;
+            updateProductVM.id=id;
+            updateProductVM.CategoryList = values;
+
+           //  TempData["Error"] =values2.UrlImage;
+
+            return View(updateProductVM);
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(UpdateProductVM updateProductVM)
+        {
+            updateProductVM.CategoryId = updateProductVM.Category.Id;
+            string url = "https://localhost:44344/api/products/" + updateProductVM.id;
+            HttpClient client = new HttpClient();
+            var jsonCategory = JsonConvert.SerializeObject(updateProductVM);
+            var content = new StringContent(jsonCategory, Encoding.UTF8, "application/json");
+            var response = await client.PutAsync(url, content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index", "Products");
+
+            }
+            var httpClient = new HttpClient();
+
+            var responseMessage = await httpClient.GetAsync("https://localhost:44344/api/Categories");
+            var jsonString2 = await responseMessage.Content.ReadAsStringAsync();
+            var values = JsonConvert.DeserializeObject<List<Category>>(jsonString2);
+
+            updateProductVM.CategoryList = values;
+
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                string errorMessage = await response.Content.ReadAsStringAsync();
+                TempData["Error"] = errorMessage;
+                return View(updateProductVM);
+            }
+            else if (response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var validation = JsonConvert.DeserializeObject<ErrorResponse>(jsonString);
+                foreach (var key in validation.errors.Keys)
+                {
+                    foreach (var error in validation.errors[key])
+                    {
+                        ModelState.AddModelError(key, error);
+                    }
+
+                }
+                
+
+
+                return View(updateProductVM);
+            }
+            return View(updateProductVM);
+        }
     }
 }

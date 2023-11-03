@@ -1,0 +1,60 @@
+﻿@using ShoppingList.WebMVC.Areas.AdminPanel.Models.ProductVM;
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@model UpdateProductVM
+
+<h1>Edit</h1>
+
+<div class="container"></div>
+@{
+    if (TempData["Error"] is not null)
+    {
+
+        <div class="alert alert-danger" role="alert">
+            @TempData["Error"]
+        </div>
+    }
+
+}
+
+<div class="card">
+    <div class="card-body">
+
+
+
+
+
+        <form asp-action="Edit" asp-controller="Products" asp-area="AdminPanel" method="post">
+
+            <div class="mb-3">
+                <label class="form-label">Ürün ID</label>
+                <input asp-for=id type="text" class="form-control" value="@Model.id" disabled>
+            </div><p class="text-danger"><span asp-validation-for="id"></span></p>
+            <div class="mb-3">
+            <div class="mb-3">
+                <label class="form-label">Kategori Adı</label>
+                <select class="form-select digits" required="" asp-for="@Model.Category.Id"
+                        asp-items="@(new SelectList(Model.CategoryList,"Id","Name"))">
+                    <option>Kategori Seçin...</option>
+                </select>
+            </div><p class="text-danger"><span asp-validation-for="CategoryId"></span></p>
+            
+
+            <div class="mb-3">
+                <label class="form-label">Ürün Adı</label>
+                <input asp-for=Name type="text" class="form-control" value="@Model.Name">
+            </div><p class="text-danger"><span asp-validation-for="Name"></span></p>
+            <div class="mb-3">
+                <label class="form-label">Image Yolu</label>
+                <input asp-for=UrlImage type="text" class="form-control" value="@Model.UrlImage">
+            </div><p class="text-danger"><span asp-validation-for="UrlImage"></span></p>
+
+            <button type="submit" class="btn btn-warning">Güncelle</button>
+        </form>
+
+
+    </div>
+</div>
