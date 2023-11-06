@@ -19,10 +19,10 @@ namespace ShoppingList.Application.Validators.Products
             RuleFor(x => x.CategoryId)
                 .NotEmpty().WithMessage("Kategori id boş geçilemez")
                 .NotNull().WithMessage("Kategori id boş geçilemez");
-            RuleFor(x => x.UrlImage)
-                .NotEmpty().WithMessage("Görsel link adresi boş geçilemez")
-                .NotNull().WithMessage("Görsel link adresi boş geçilemez")
-                .Length(2, 250).WithMessage("Görselin dosya yolu en az 2 en çok 250 karakter olmalı"); ;
+            //RuleFor(x => x.UrlImage)
+            //    .NotEmpty().WithMessage("Görsel link adresi boş geçilemez")
+            //    .NotNull().WithMessage("Görsel link adresi boş geçilemez")
+            //    .Length(2, 250).WithMessage("Görselin dosya yolu en az 2 en çok 250 karakter olmalı"); ;
 
         }
     }

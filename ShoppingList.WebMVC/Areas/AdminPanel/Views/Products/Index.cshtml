@@ -6,6 +6,14 @@
 }
 @model List<ProductDetailDTOVM>
 <h1>Ürün İşlemleri</h1>
+@{
+    if (TempData["Error"] is not null)
+    {
+        @TempData["Error"]
+        
+    }
+
+}
 
 <div class="container">
     <p><a class="btn btn-primary" asp-action="add" asp-controller="Products" asp-area="AdminPanel" role="button">Ürün Ekle</a></p>
@@ -15,7 +23,8 @@
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">İmage</th>
+                        
+                        <th scope="col">Görsel</th>
                         <th scope="col">Ürün Adı</th>
                         <th scope="col">Kategori Adı</th>
                         <th scope="col">İşlem</th>
@@ -27,7 +36,8 @@
                     {
                         <tr>
                             <th scope="row">@product.Id</th>
-                            <td scope="row">@product.UrlImage</td>
+                            
+                            <td scope="row"><img src="@product.UrlImage" width="25"></td>
                             <td>@product.Name</td>
                             <td>@product.CategoryName</td>
                             <td>

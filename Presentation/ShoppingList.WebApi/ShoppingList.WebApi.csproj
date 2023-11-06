@@ -21,4 +21,8 @@
     <ProjectReference Include="..\..\Infrastructure\ShoppingList.Persistence\ShoppingList.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Uploads\" />
+  </ItemGroup>
+
 </Project>

@@ -10,5 +10,6 @@ namespace ShoppingList.WebMVC.Areas.AdminPanel.Models.ProductVM
         public string UrlImage { get; set; }
         public List<Category> CategoryList { get; set; }
         public Category Category { get; set; }
+        public IFormFile UploadPhoto { get; set; }
     }
 }

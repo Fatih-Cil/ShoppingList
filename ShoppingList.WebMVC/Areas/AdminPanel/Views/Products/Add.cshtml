@@ -27,7 +27,7 @@
         
 
 
-        <form asp-action="add" asp-controller="Products" asp-area="AdminPanel" method="post">
+        <form asp-action="add" asp-controller="Products" asp-area="AdminPanel" enctype="multipart/form-data" method="post">
 
         
             <div class="mb-3">
@@ -43,10 +43,16 @@
                 <label class="form-label">Ürün Adı</label>
                 <input asp-for=Name type="text" class="form-control">
             </div><p class="text-danger"><span asp-validation-for="Name"></span></p>
-            <div class="mb-3">
+            @* <div class="mb-3">
                 <label class="form-label">Image Yolu</label>
                 <input asp-for=UrlImage type="text" class="form-control">
             </div><p class="text-danger"><span asp-validation-for="UrlImage"></span></p>
+ *@
+            <div class="mb-3">
+               
+                <input asp-for="UploadPhoto" type="file" class="form-control">
+                <label class="form-file-label" for="customFile">Dosya seç</label>
+            </div>
 
             <button type="submit" class="btn btn-primary">Ekle</button>
         </form>

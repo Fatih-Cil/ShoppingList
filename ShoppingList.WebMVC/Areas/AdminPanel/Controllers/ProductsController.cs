@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using ShoppingList.Domain.Entities;
@@ -6,6 +7,7 @@ using ShoppingList.WebMVC.Areas.AdminPanel.Models.CategoryVM;
 using ShoppingList.WebMVC.Areas.AdminPanel.Models.ProductVM;
 using ShoppingList.WebMVC.Models;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 
 namespace ShoppingList.WebMVC.Areas.AdminPanel.Controllers
@@ -13,6 +15,13 @@ namespace ShoppingList.WebMVC.Areas.AdminPanel.Controllers
     [Area("AdminPanel")]
     public class ProductsController : Controller
     {
+        IWebHostEnvironment _env;
+
+        public ProductsController(IWebHostEnvironment env)
+        {
+            _env = env;
+        }
+
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -20,8 +29,16 @@ namespace ShoppingList.WebMVC.Areas.AdminPanel.Controllers
             var httpClient = new HttpClient();
 
             var responseMessage = await httpClient.GetAsync("https://localhost:44344/api/Products");
+
+            if (responseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                TempData["Error"] = "Hüç ürün eklenmediği için lütfen ürün ekleyiniz";
+                return RedirectToAction("Add", "Products");
+
+            }
             var jsonString = await responseMessage.Content.ReadAsStringAsync();
             var values = JsonConvert.DeserializeObject<List<ProductDetailDTOVM>>(jsonString);
+            
             return View(values);
 
         }
@@ -46,11 +63,21 @@ namespace ShoppingList.WebMVC.Areas.AdminPanel.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(AddProductVM addProductVM)
+        public async Task<IActionResult> Add(AddProductVM addProductVM, IFormFile uploadPhoto)
         {
-            // TempData["Error"] = addProductVM.Category.Id + addProductVM.Name + addProductVM.UrlImage;
-
+         
             addProductVM.CategoryId = addProductVM.Category.Id;
+
+            if (uploadPhoto != null && uploadPhoto.Length > 0)
+            {
+                addProductVM.UrlImage = Path.Combine("/Images", uploadPhoto.FileName);
+                addProductVM.UrlImage = addProductVM.UrlImage.Replace("\\", "/");
+
+            }
+            else addProductVM.UrlImage = "";
+
+            
+
             string url = "https://localhost:44344/api/Products/";
             HttpClient client = new HttpClient();
             var jsonCategory = JsonConvert.SerializeObject(addProductVM);
@@ -59,10 +86,23 @@ namespace ShoppingList.WebMVC.Areas.AdminPanel.Controllers
 
             if (response.StatusCode == System.Net.HttpStatusCode.Created)
             {
+
+                if (uploadPhoto != null)
+                {
+
+                    string uploadPath = Path.Combine(_env.WebRootPath, "Images", uploadPhoto.FileName);
+
+                    using (var stream = new FileStream(uploadPath, FileMode.Create))
+                    {
+                        await uploadPhoto.CopyToAsync(stream);
+
+                    }
+
+                }
+
                 return RedirectToAction("Index", "Products");
 
             }
-
 
             else if (response.StatusCode == HttpStatusCode.BadRequest || addProductVM.CategoryId == 0)
             {
@@ -90,14 +130,7 @@ namespace ShoppingList.WebMVC.Areas.AdminPanel.Controllers
 
             }
 
-            else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
-            {
-                string errorMessage = await response.Content.ReadAsStringAsync();
-                TempData["Error"] = errorMessage;
-                return RedirectToAction("Add", "Products");
-            }
-
-            else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+            else if (response.StatusCode == System.Net.HttpStatusCode.NotFound || response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
             {
                 string errorMessage = await response.Content.ReadAsStringAsync();
                 TempData["Error"] = errorMessage;
@@ -176,44 +209,79 @@ namespace ShoppingList.WebMVC.Areas.AdminPanel.Controllers
             var jsonString = await responseMessage.Content.ReadAsStringAsync();
             var values = JsonConvert.DeserializeObject<List<Category>>(jsonString);
 
-            var responseMessage2 = await httpClient.GetAsync("https://localhost:44344/api/Products/"+id);
+            var responseMessage2 = await httpClient.GetAsync("https://localhost:44344/api/Products/" + id);
             var jsonString2 = await responseMessage2.Content.ReadAsStringAsync();
             var values2 = JsonConvert.DeserializeObject<AddProductVM>(jsonString2);
 
             UpdateProductVM updateProductVM = new UpdateProductVM();
             updateProductVM.Name = values2.Name;
-            updateProductVM.UrlImage=values2.UrlImage;
-            updateProductVM.id=id;
+            updateProductVM.UrlImage = values2.UrlImage;
+            updateProductVM.id = id;
             updateProductVM.CategoryList = values;
 
-           //  TempData["Error"] =values2.UrlImage;
+            //  TempData["Error"] =values2.UrlImage;
 
             return View(updateProductVM);
 
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(UpdateProductVM updateProductVM)
+        public async Task<IActionResult> Edit(UpdateProductVM updateProductVM, IFormFile uploadPhoto)
         {
-            updateProductVM.CategoryId = updateProductVM.Category.Id;
+            
             string url = "https://localhost:44344/api/products/" + updateProductVM.id;
+
+            if (uploadPhoto!=null && uploadPhoto.Length>0)
+            {
+                updateProductVM.UrlImage = Path.Combine("/Images", uploadPhoto.FileName);
+                updateProductVM.UrlImage = updateProductVM.UrlImage.Replace("\\", "/");
+
+            }
+            else updateProductVM.UrlImage = "";
+            
+
             HttpClient client = new HttpClient();
-            var jsonCategory = JsonConvert.SerializeObject(updateProductVM);
-            var content = new StringContent(jsonCategory, Encoding.UTF8, "application/json");
+            var jsonProduct = JsonConvert.SerializeObject(updateProductVM);
+            var content = new StringContent(jsonProduct, Encoding.UTF8, "application/json");
             var response = await client.PutAsync(url, content);
 
             if (response.IsSuccessStatusCode)
             {
+
+                if (uploadPhoto != null)
+                {
+
+                    string uploadPath = Path.Combine(_env.WebRootPath, "Images", uploadPhoto.FileName);
+
+                    using (var stream = new FileStream(uploadPath, FileMode.Create))
+                    {
+                        await uploadPhoto.CopyToAsync(stream);
+
+                    }
+
+                }
                 return RedirectToAction("Index", "Products");
 
             }
+
+
+
             var httpClient = new HttpClient();
 
-            var responseMessage = await httpClient.GetAsync("https://localhost:44344/api/Categories");
-            var jsonString2 = await responseMessage.Content.ReadAsStringAsync();
-            var values = JsonConvert.DeserializeObject<List<Category>>(jsonString2);
+            var responseMessage2 = await httpClient.GetAsync("https://localhost:44344/api/Categories");
+            var jsonString2 = await responseMessage2.Content.ReadAsStringAsync();
+            var values2 = JsonConvert.DeserializeObject<List<Category>>(jsonString2);
 
-            updateProductVM.CategoryList = values;
+            //var responseMessage3 = await httpClient.GetAsync("https://localhost:44344/api/Products/" + updateProductVM.id);
+            //var jsonString3 = await responseMessage3.Content.ReadAsStringAsync();
+            //var values3= JsonConvert.DeserializeObject<AddProductVM>(jsonString3);
+
+            //UpdateProductVM updateProductVM2 = new UpdateProductVM();
+            //updateProductVM2.Name = values3.Name;
+            //updateProductVM2.UrlImage = values3.UrlImage;
+            //updateProductVM2.id = updateProductVM.id;
+            updateProductVM.CategoryList = values2;
+
 
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
@@ -233,8 +301,6 @@ namespace ShoppingList.WebMVC.Areas.AdminPanel.Controllers
                     }
 
                 }
-                
-
 
                 return View(updateProductVM);
             }

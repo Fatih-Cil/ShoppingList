@@ -6,7 +6,7 @@
 }
 @model UpdateProductVM
 
-<h1>Edit</h1>
+<h1>Ürün Güncelle</h1>
 
 <div class="container"></div>
 @{
@@ -27,16 +27,19 @@
 
 
 
-        <form asp-action="Edit" asp-controller="Products" asp-area="AdminPanel" method="post">
+        <form asp-action="Edit" asp-controller="Products" asp-area="AdminPanel" enctype="multipart/form-data"  method="post">
 
+            <div class="mb-3">
+                <img src="@Model.UrlImage" width="50">
+            </div>
             <div class="mb-3">
                 <label class="form-label">Ürün ID</label>
                 <input asp-for=id type="text" class="form-control" value="@Model.id" disabled>
             </div><p class="text-danger"><span asp-validation-for="id"></span></p>
-            <div class="mb-3">
+            
             <div class="mb-3">
                 <label class="form-label">Kategori Adı</label>
-                <select class="form-select digits" required="" asp-for="@Model.Category.Id"
+                <select class="form-select digits" required="" asp-for="@Model.CategoryId"
                         asp-items="@(new SelectList(Model.CategoryList,"Id","Name"))">
                     <option>Kategori Seçin...</option>
                 </select>
@@ -47,10 +50,16 @@
                 <label class="form-label">Ürün Adı</label>
                 <input asp-for=Name type="text" class="form-control" value="@Model.Name">
             </div><p class="text-danger"><span asp-validation-for="Name"></span></p>
-            <div class="mb-3">
+
+                <div class="mb-3">
+
+                    <input asp-for="UploadPhoto" type="file" class="form-control">
+                    <label class="form-file-label" for="customFile">Dosya seç</label>
+                </div>
+            @* <div class="mb-3">
                 <label class="form-label">Image Yolu</label>
                 <input asp-for=UrlImage type="text" class="form-control" value="@Model.UrlImage">
-            </div><p class="text-danger"><span asp-validation-for="UrlImage"></span></p>
+            </div><p class="text-danger"><span asp-validation-for="UrlImage"></span></p> *@
 
             <button type="submit" class="btn btn-warning">Güncelle</button>
         </form>

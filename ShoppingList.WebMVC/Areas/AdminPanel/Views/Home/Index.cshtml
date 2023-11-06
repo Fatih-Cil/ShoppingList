@@ -1,5 +1,6 @@
 ﻿@using System.IdentityModel.Tokens.Jwt;
 @using System.Security.Claims;
+@using ShoppingList.WebMVC.Areas.AdminPanel.Models.DashboardVM;
 
 @{
     ViewData["Title"] = "Index";
@@ -15,4 +16,43 @@
     Hoşgeldin @nameClaim.Value.ToUpper()
     
 } *@
-<h1>Index</h1>
+
+@model DashboardViewModel
+<h1>Dashboard</h1>
+
+
+<div class="container text-center">
+    <div class="row">
+        <div class="col">
+            <div class="card text-bg-info mb-3" style="max-width: 18rem;">
+
+                <div class="card-body text-center">
+                    <h5 class="card-title">KATEGORİ SAYISI</h5>
+                    <p class="card-text"><h2>@Model.CategoryCount</h2></p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card text-bg-warning mb-3" style="max-width: 18rem;">
+
+                <div class="card-body text-center">
+                    <h5 class="card-title">ÜRÜN SAYISI</h5>
+                    <p class="card-text"><h2>@Model.ProductCount</h2></p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card text-bg-success mb-3" style="max-width: 18rem;">
+
+                <div class="card-body">
+                    <h5 class="card-title text-center">KULLANICI SAYISI</h5>
+                    <p class="card-text"><h2>@Model.UserCount</h2></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
