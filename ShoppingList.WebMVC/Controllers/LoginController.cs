@@ -46,7 +46,8 @@ namespace ShoppingList.WebMVC.Controllers
             {
                 string jwt = await response.Content.ReadAsStringAsync();
 
-                TempData["Token"] = jwt;
+                HttpContext.Session.SetString("SessionUser", jwt);
+               TempData["Token"] = jwt;
                 var handler = new JwtSecurityTokenHandler();
                 var token = handler.ReadJwtToken(jwt);
                 var roleClaim = token.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Role);

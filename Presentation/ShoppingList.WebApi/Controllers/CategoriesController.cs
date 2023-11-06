@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingList.Application.Abstractions.IServices;
 using ShoppingList.Application.ViewModels.CategoryViewModel;
@@ -20,6 +21,7 @@ namespace ShoppingList.WebApi.Controllers
             _productService = productService;
         }
 
+       // [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -33,6 +35,8 @@ namespace ShoppingList.WebApi.Controllers
 
         }
 
+
+      //  [Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
@@ -45,6 +49,7 @@ namespace ShoppingList.WebApi.Controllers
 
         }
 
+       // [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult Add(AddCategoryViewModel addCategoryViewModel)
         {
@@ -65,6 +70,7 @@ namespace ShoppingList.WebApi.Controllers
             return CreatedAtAction(nameof(GetById), new { id = result.Item1.Id }, addCategoryViewModel);
         }
 
+       // [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public IActionResult DeleteById(int id)
         {
@@ -81,6 +87,7 @@ namespace ShoppingList.WebApi.Controllers
 
         }
 
+       // [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public IActionResult Update(int id, UpdateCategoryViewModel updateCategoryViewModel)
         {

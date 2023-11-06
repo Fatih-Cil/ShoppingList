@@ -7,6 +7,7 @@ using ShoppingList.WebMVC.Areas.AdminPanel.Models.CategoryVM;
 using ShoppingList.WebMVC.Models;
 
 using System.Net;
+using System.Net.Http.Headers;
 using System.Text;
 
 
@@ -17,11 +18,35 @@ namespace ShoppingList.WebMVC.Areas.AdminPanel.Controllers
     public class CategoriesController : Controller
     {
 
+        string responsejwt = "";
+        private void AddJwtTokenToRequest(HttpClient httpClient, string token)
+        {
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        }
+
+        private bool SessionCheck()
+        {
+            responsejwt = HttpContext.Session.GetString("SessionUser");
+            if (string.IsNullOrEmpty(responsejwt))
+            {
+                return false;
+            }
+            return true;
+
+        }
+
+
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            if (!SessionCheck())
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
             var httpClient = new HttpClient();
+
+            AddJwtTokenToRequest(httpClient, responsejwt);
 
             var responseMessage = await httpClient.GetAsync("https://localhost:44344/api/Categories");
 

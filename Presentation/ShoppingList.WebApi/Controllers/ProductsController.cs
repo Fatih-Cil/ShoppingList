@@ -20,7 +20,7 @@ namespace ShoppingList.WebApi.Controllers
             _productService = productService;
         }
 
-        //[Authorize(Roles = "Admin,User")]
+       //[Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -33,7 +33,7 @@ namespace ShoppingList.WebApi.Controllers
 
         }
 
-        //[Authorize(Roles = "Admin,User")]
+        //[Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
@@ -46,7 +46,7 @@ namespace ShoppingList.WebApi.Controllers
 
         }
 
-        //[Authorize(Roles = "Admin,User")]
+       // [Authorize(Roles = "Admin,User")]
         [HttpGet("ProductDatail/{id}")]
         public IActionResult GetBydDetailId(int id)
         {
@@ -60,7 +60,7 @@ namespace ShoppingList.WebApi.Controllers
         }
 
 
-        //[Authorize(Roles = "Admin")]
+       // [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
