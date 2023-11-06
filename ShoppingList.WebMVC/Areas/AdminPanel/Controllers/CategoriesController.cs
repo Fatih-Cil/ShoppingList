@@ -24,6 +24,13 @@ namespace ShoppingList.WebMVC.Areas.AdminPanel.Controllers
             var httpClient = new HttpClient();
 
             var responseMessage = await httpClient.GetAsync("https://localhost:44344/api/Categories");
+
+            if (responseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                TempData["Error"] = "Daha önce kategori eklenmediği için lütfen önce kategori ekleyiniz";
+                return RedirectToAction("Add", "Categories");
+
+            }
             var jsonString = await responseMessage.Content.ReadAsStringAsync();
             var values = JsonConvert.DeserializeObject<List<Category>>(jsonString);
             return View(values);
@@ -31,7 +38,7 @@ namespace ShoppingList.WebMVC.Areas.AdminPanel.Controllers
         }
 
 
-        [HttpGet]
+        [HttpGet("Admin/Categories/Add")]
         public async Task<IActionResult> Add()
         {
 

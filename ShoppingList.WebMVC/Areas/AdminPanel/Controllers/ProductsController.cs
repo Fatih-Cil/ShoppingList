@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using ShoppingList.Domain.Entities;
 using ShoppingList.WebMVC.Areas.AdminPanel.Models.CategoryVM;
+using ShoppingList.WebMVC.Areas.AdminPanel.Models.DashboardVM;
 using ShoppingList.WebMVC.Areas.AdminPanel.Models.ProductVM;
 using ShoppingList.WebMVC.Models;
 using System.Net;
@@ -32,7 +33,7 @@ namespace ShoppingList.WebMVC.Areas.AdminPanel.Controllers
 
             if (responseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
-                TempData["Error"] = "Hüç ürün eklenmediği için lütfen ürün ekleyiniz";
+                TempData["Error"] = "Daha önce ürün eklenmediği için lütfen önce ürün ekleyiniz";
                 return RedirectToAction("Add", "Products");
 
             }
@@ -50,6 +51,13 @@ namespace ShoppingList.WebMVC.Areas.AdminPanel.Controllers
             var httpClient = new HttpClient();
 
             var responseMessage = await httpClient.GetAsync("https://localhost:44344/api/Categories");
+
+
+            if (responseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                TempData["Error"] = "Daha önce kategori eklenmediği için lütfen önce kategori ekleyiniz";
+                return RedirectToAction("Add", "Categories");
+            }
             var jsonString = await responseMessage.Content.ReadAsStringAsync();
             var values = JsonConvert.DeserializeObject<List<Category>>(jsonString);
 
