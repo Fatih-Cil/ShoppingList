@@ -45,9 +45,17 @@ namespace ShoppingList.WebMVC.Controllers
             if (response.IsSuccessStatusCode)
             {
                 string jwt = await response.Content.ReadAsStringAsync();
+                //var options = new CookieOptions
+                //{
+                //    HttpOnly = true, // Sadece sunucu tarafından erişilebilir yapar
+                //    Secure = true,   // Sadece HTTPS bağlantıları üzerinden gönderilir
+                //};
+
+                //Response.Cookies.Append("jwtToken", jwt, options);
+
 
                 HttpContext.Session.SetString("SessionUser", jwt);
-               TempData["Token"] = jwt;
+                // TempData["Token"] = jwt;
                 var handler = new JwtSecurityTokenHandler();
                 var token = handler.ReadJwtToken(jwt);
                 var roleClaim = token.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Role);

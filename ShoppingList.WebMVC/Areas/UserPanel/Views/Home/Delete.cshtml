@@ -1,0 +1,64 @@
+﻿@using ShoppingList.WebMVC.Areas.UserPanel.Models.HomeVM;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+@model ListViewModel
+
+
+
+<!-- Modal Liste Silme -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Listeyi sil</h5>
+                
+            </div>
+            <div class="modal-body">
+                <form id="deleteForm" action="/User/Home/delete" method="post">
+                    <div class="mb-3">
+                        <input name="Id" type="text" value="@Model.Id" hidden class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Liste Adı</label>
+                        <input name="Name" type="text" class="form-control" value="@Model.Name" readonly>
+                    </div>
+
+                    <button type="submit" class="btn btn-danger">Listeyi Sil</button>
+                    <button type="button" class="btn btn-secondary" onclick="cancelDelete()">İptal</button>
+                </form>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+
+
+
+@* <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> *@
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            // Sayfa yüklendiğinde modal'ı göster
+            $('#staticBackdrop').modal('show');
+        });
+
+       
+
+        function cancelDelete() {
+            window.location.href = '/User/Home/index';
+        }
+       
+    </script>
+}
+
+
+

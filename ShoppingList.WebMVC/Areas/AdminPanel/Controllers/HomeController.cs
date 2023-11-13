@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using ShoppingList.Domain.Entities;
 using ShoppingList.WebMVC.Areas.AdminPanel.Models.DashboardVM;
 using ShoppingList.WebMVC.Areas.AdminPanel.Models.ProductVM;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
+using System.Security.Claims;
 
 namespace ShoppingList.WebMVC.Areas.AdminPanel.Controllers
 {
@@ -24,13 +27,23 @@ namespace ShoppingList.WebMVC.Areas.AdminPanel.Controllers
             {
                 return false;
             }
+            var handler = new JwtSecurityTokenHandler();
+            var token = handler.ReadJwtToken(responsejwt);
+            var roleClaim = token.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Role);
+            if (roleClaim == null || roleClaim.Value!="Admin")
+            {
+
+                return false;
+
+            }
             return true;
 
         }
 
         public async Task<IActionResult> Index()
         {
-           
+
+
             if (!SessionCheck())
             {
                 return RedirectToAction("Index", "Home");
@@ -54,7 +67,7 @@ namespace ShoppingList.WebMVC.Areas.AdminPanel.Controllers
             else dashboardViewModel.ProductCount = 0;
 
             var responseCategory = await httpClient.GetAsync("https://localhost:44344/api/Categories");
-            responseProduct.Headers.Add("Authorization", "key=" + responsejwt);
+          //  responseProduct.Headers.Add("Authorization", "key=" + responsejwt);
             if (responseCategory.StatusCode != System.Net.HttpStatusCode.NotFound)
             {
                 var jsonStringCategory = await responseCategory.Content.ReadAsStringAsync();

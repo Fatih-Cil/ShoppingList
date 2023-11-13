@@ -1,29 +1,41 @@
 ﻿@using ShoppingList.WebMVC.Areas.AdminPanel.Models.ProductVM;
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
 @model List<ProductDetailDTOVM>
-<h1>Ürün İşlemleri</h1>
-@{
-    if (TempData["Error"] is not null)
-    {
-        @TempData["Error"]
-        
-    }
+<h1>Index</h1>
 
-}
+Liste ekleme sayfası
+
+
+
 
 <div class="container">
-    <p><a class="btn btn-primary" asp-action="add" asp-controller="Products" asp-area="AdminPanel" role="button">Ürün Ekle</a></p>
-    <div class="card">
+
+    <div class="card my-2">
+        <div class="card-body">
+            <form method="get" id="filter">
+                <div class="form-group">
+                    <input id="productName" name="name" class="form-control" placeholder="Ürün Ara" value="@ViewBag.Name" />
+                </div>
+                <div class="form-group mt-2"><button class="btn btn-primary">Filtrele</button></div>
+
+            </form>
+        </div>
+    </div>
+
+
+    
+
+     <div class="card">
         <div class="card-body">
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        
+
                         <th scope="col">Görsel</th>
                         <th scope="col">Ürün Adı</th>
                         <th scope="col">Kategori Adı</th>
@@ -36,7 +48,7 @@
                     {
                         <tr>
                             <th scope="row">@product.Id</th>
-                            
+
                             <td scope="row"><img src="@product.UrlImage" width="25"></td>
                             <td>@product.Name</td>
                             <td>@product.CategoryName</td>

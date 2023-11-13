@@ -56,6 +56,8 @@ namespace ShoppingList.WebApi.Controllers
                 claims.Add(new Claim(ClaimTypes.Email,result.Email));
                 claims.Add(new Claim(ClaimTypes.NameIdentifier ,result.Email));
                 claims.Add(new Claim(ClaimTypes.Role, role));
+                claims.Add(new Claim(ClaimTypes.Sid,result.Id.ToString()));
+                
 
 
 

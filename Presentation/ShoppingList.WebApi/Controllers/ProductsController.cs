@@ -20,7 +20,7 @@ namespace ShoppingList.WebApi.Controllers
             _productService = productService;
         }
 
-       //[Authorize(Roles = "Admin")]
+     //  [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult GetAll()
         {

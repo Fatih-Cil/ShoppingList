@@ -41,6 +41,18 @@ namespace ShoppingList.WebApi.Controllers
 
         }
 
+        [HttpGet("email")]
+        public IActionResult GetByMail(string email)
+        {
+
+            User result = _userService.GetByMail(email);
+
+            return (result == null)
+                 ? NotFound("Kullanıcı bulunamadı")
+                 : Ok(result);
+
+        }
+
         [HttpPost]
         public IActionResult Add(AddUserViewModel addUserViewModel)
         {
