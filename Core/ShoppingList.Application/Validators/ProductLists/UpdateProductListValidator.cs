@@ -13,7 +13,7 @@ namespace ShoppingList.Application.Validators.ProductLists
         public UpdateProductListValidator()
         {
             RuleFor(x => x.Description)
-                     .MaximumLength(200).WithMessage("En çok 200 karakter olmalı");
+                     .MaximumLength(20).WithMessage("Açıklama en çok 20 karakter olmalı");
         }
     }
 }

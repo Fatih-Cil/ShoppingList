@@ -81,8 +81,9 @@
                         @{
                             if (Model.ProductListsVM is not null)
                             {
-                                
-                                    <button class="btn btn-success" asp-controller="Lists" asp-action="delete">Alışverişe Çık</button>
+                                <form method="post" asp-controller="Lists" asp-action="shoppinggo" asp-route-listid="@ViewBag.ListId" asp-route-listname="@ViewBag.ListName">
+                                <button class="btn btn-success" type="submit" >Alışverişe Çık</button>
+                                </form>
                             }
                         }
 
@@ -111,7 +112,14 @@
                                             @TempData["ProductAddError"]
                                         </div>
                                     }
+                                    if (TempData["ModelError"] is not null)
+                                    {
 
+                                        <div class="alert alert-danger" role="alert">
+                                            @TempData["ModelError"]
+                                        </div>
+                                    }
+                                    
                                     if (TempData["ProductListMessage"] is not null)
                                     {
 
@@ -139,6 +147,7 @@
                                                                 <div class="mb-3">
                                                                     <input class="form-control" type="text" required="" hidden="" readonly="" name="id" value="@productlist.id">
                                                                     <input class="form-control" type="text" required="" hidden="" readonly="" name="listname" value="@productlist.ListName">
+                                                                    <input class="form-control" type="text" required="" hidden="" readonly="" name="status" value="true">
                                                                     <input class="form-control" type="text" required="" hidden="" readonly="" name="listid" value="@productlist.ListId">
                                                                     <img src="@productlist.ProductImageUrl" width="25">
                                                                     <label class="col-form-label" for="recipient-name">@productlist.ProductName</label>
@@ -148,9 +157,10 @@
                                                                     <label class="col-form-label" for="recipient-name">Açıklama Girin (Adet/Kg/Litre vs.)</label>
                                                                     <input class="form-control" type="text" name="Description" value="@productlist.Description">
                                                                 </div>
+                                                               
                                                                 <div class="modal-footer">
                                                                     <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Vazgeç</button>
-                                                                    <button class="btn btn-primary" type="submit">Güncelle</button>
+                                                                    <button class="btn btn-warning" type="submit">Güncelle</button>
                                                                 </div>
                                                             </form>
                                                         </div>

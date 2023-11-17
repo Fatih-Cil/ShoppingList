@@ -1,0 +1,104 @@
+﻿@using ShoppingList.WebMVC.Areas.UserPanel.Models.ListsVM;
+
+@{
+    ViewData["Title"] = "ListView";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+@model List<ListViewVM>
+<h1>ListView</h1>
+
+<div class="col-8">
+    <div class="card shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+        <div class="card-header">
+            <h3> Alış Veriş Listeniz </h3>
+            <div class="card-body">
+                @{
+                    if (Model.Count>0)
+                    {
+                        <form method="post" asp-controller="Lists" asp-action="ShoppingFinish" asp-route-listid="@ViewBag.ListId" asp-route-listname="@ViewBag.ListName">
+                            <button class="btn btn-success" type="submit">Alışverişi Bitir</button>
+                        </form>
+                    }
+                }
+
+                <table class="table table-striped my-2">
+                    <thead>
+                        <tr>
+
+
+                            <th scope="col">ProductId</th>
+                            <th scope="col">Görsel</th>
+                            <th scope="col">ProductName</th>
+                            <th scope="col">ListId</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">status</th>
+                            <th scope="col">İşlem</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @{
+                            if (TempData["ProductAddError"] is not null)
+                            {
+
+                                <div class="alert alert-danger" role="alert">
+                                    @TempData["ProductAddError"]
+                                </div>
+                            }
+                            if (TempData["ModelError"] is not null)
+                            {
+
+                                <div class="alert alert-danger" role="alert">
+                                    @TempData["ModelError"]
+                                </div>
+                            }
+
+                            if (TempData["ProductListMessage"] is not null)
+                            {
+
+                                <div class="alert alert-danger" role="alert">
+                                    @TempData["ProductListMessage"]
+                                </div>
+                            }
+                            else
+                            {
+
+                                @foreach (var productlist in Model.Where(item=>item.Status==true))
+                                {
+                                   
+                                    <form method="post" asp-action="Add">
+                                    <tr>
+                                        <th scope="row">@productlist.Id</th>
+                                        <td scope="row"><img src="@productlist.ProductImageUrl" width="25"></td>
+                                        <th scope="row">@productlist.ProductName</th>
+                                        <td>@productlist.ListId</td>
+                                           
+                                        <td>@productlist.Description</td>
+                                        <td>@productlist.Status</td>
+                                        <td>
+                                            
+
+
+                                            <button class="btn btn-danger" asp-controller="Lists" asp-action="updatelist" asp-route-id="@productlist.Id" asp-route-listid="@ViewBag.ListId" asp-route-listname="@ViewBag.ListName">Aldım</button>
+
+                                                
+
+                                        </td>
+
+                                    </tr>
+                                    </form>
+                                }
+
+                            }
+                        }
+
+
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -103,7 +103,7 @@ namespace ShoppingList.WebApi.Controllers
             productList.Id = id;
 
             productList.Description = updateProductListModel.Description;
-
+            productList.Status = updateProductListModel.Status;
 
             var result = _productListService.Update(productList);
             if (result.kod == 0) return NotFound(result.message);

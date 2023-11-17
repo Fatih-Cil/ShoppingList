@@ -5,12 +5,16 @@ using ShoppingList.WebMVC.Areas.AdminPanel.Models.CategoryVM;
 using ShoppingList.WebMVC.Areas.AdminPanel.Models.ProductVM;
 using ShoppingList.WebMVC.Areas.UserPanel.Models.HomeVM;
 using ShoppingList.WebMVC.Areas.UserPanel.Models.ListsVM;
+using ShoppingList.WebMVC.Models;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
+using System.Security.Policy;
 using System.Text;
+using static System.Net.WebRequestMethods;
 
 namespace ShoppingList.WebMVC.Areas.UserPanel.Controllers
 {
@@ -193,6 +197,7 @@ namespace ShoppingList.WebMVC.Areas.UserPanel.Controllers
             return RedirectToAction("Index", new { name, listid, listname });
         }
 
+
         [HttpPost]
         public async Task<IActionResult> Update(UpdateProductListVM updateProductListVM)
         {
@@ -214,12 +219,207 @@ namespace ShoppingList.WebMVC.Areas.UserPanel.Controllers
                 var jsonCategory = JsonConvert.SerializeObject(updateProductListVM);
                 var content = new StringContent(jsonCategory, Encoding.UTF8, "application/json");
                 var response = await client.PutAsync(url, content);
+            if (response.IsSuccessStatusCode)
+            {
 
                 return RedirectToAction("Index", new { name, updateProductListVM.listid, updateProductListVM.listname });
+
+            }
+            else if (response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var validation = JsonConvert.DeserializeObject<ErrorResponse>(jsonString);
+                foreach (var key in validation.errors.Keys)
+                {
+                    foreach (var error in validation.errors[key])
+                    {
+                        ModelState.AddModelError(key, error);
+                        TempData["ModelError"]=error;
+                    }
+
+                }
+
+                return RedirectToAction("Index", new { name, updateProductListVM.listid, updateProductListVM.listname });
+            }
+            return RedirectToAction("Index", new { name, updateProductListVM.listid, updateProductListVM.listname });
           
+        }
 
-           ;
+        [HttpPost]
+        public async Task<IActionResult> ShoppingGo(int listid, string listname)
+        {
+            if (!SessionCheck())
+            {
+                return RedirectToAction("Index", "Login", new { area = "" });
+            }
+            string name = null;
+            string url = "https://localhost:44344/api/Lists/" + listid;
 
+            var handler = new JwtSecurityTokenHandler();
+            var token = handler.ReadJwtToken(responsejwt);
+            var roleSid = token.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Sid);
+                    
+            UpdateListVM updateListVM = new UpdateListVM();
+            updateListVM.Userid =Convert.ToInt32(roleSid.Value);
+            updateListVM.Name = listname;
+            updateListVM.Status = false;
+           
+
+                
+
+
+            HttpClient client = new HttpClient();
+            var jsonCategory = JsonConvert.SerializeObject(updateListVM);
+            var content = new StringContent(jsonCategory, Encoding.UTF8, "application/json");
+            var response = await client.PutAsync(url, content);
+
+           
+            return RedirectToAction("Listview", new { name, listid, listname });
+            
+
+
+        }
+
+
+        public async Task<IActionResult> ListView(int listid,string listname)
+        {
+            ViewBag.listid = listid;
+            ViewBag.listname = listname;
+           
+
+            string url = "https://localhost:44344/api/ProductLists/ProductListDetail/" + listid;
+            HttpClient client = new HttpClient();
+
+            var responseMessage = await client.GetAsync(url);
+
+            if (responseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+
+                return RedirectToAction("Index", "Home");
+
+            }
+            var jsonString = await responseMessage.Content.ReadAsStringAsync();
+            List<ListViewVM> values = JsonConvert.DeserializeObject<List<ListViewVM>>(jsonString);
+
+
+            return View(values);
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ShoppingFinish(int listid, string listname)
+        {
+            if (!SessionCheck())
+            {
+                return RedirectToAction("Index", "Login", new { area = "" });
+            }
+            string name = null;
+            string url = "https://localhost:44344/api/Lists/" + listid;
+
+            var handler = new JwtSecurityTokenHandler();
+            var token = handler.ReadJwtToken(responsejwt);
+            var roleSid = token.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Sid);
+
+            UpdateListVM updateListVM = new UpdateListVM();
+            updateListVM.Userid = Convert.ToInt32(roleSid.Value);
+            updateListVM.Name = listname;
+            updateListVM.Status = true;
+
+            HttpClient client = new HttpClient();
+            var jsonCategory = JsonConvert.SerializeObject(updateListVM);
+            var content = new StringContent(jsonCategory, Encoding.UTF8, "application/json");
+            var response = await client.PutAsync(url, content);
+
+
+
+            string urlupdate = "https://localhost:44344/api/ProductLists/ProductListDetail/" + listid;
+            
+
+            var responseMessage = await client.GetAsync(urlupdate);
+
+            if (responseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+
+                return RedirectToAction("Index", "Home");
+
+            }
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                var jsonString = await responseMessage.Content.ReadAsStringAsync();
+                List<ListViewVM> values2 = JsonConvert.DeserializeObject<List<ListViewVM>>(jsonString);
+
+                foreach (var item in values2)
+                {
+                    if (item.Status != true)
+                    {
+                        item.Status = true;
+                       
+
+
+                        string url2 = "https://localhost:44344/api/ProductLists/" + item.Id;
+                        HttpClient client2 = new HttpClient();
+                        var jsonCategory2 = JsonConvert.SerializeObject(item);
+                        var content2 = new StringContent(jsonCategory2, Encoding.UTF8, "application/json");
+                        var response2 = await client2.PutAsync(url2, content2);
+
+                        
+                    }
+
+                }
+            }
+           
+                        return RedirectToAction("Index", "Home", new { name, listid, listname });
+
+        }
+
+        //[HttpPost("user/lists/listupdate")]
+        //public async List<IActionResult> ListUpdate(int id, int listid, string listname)
+        //{
+        //    string name = "";
+
+        //    //string url2 = "https://localhost:44344/api/ProductLists/" + id;
+        //    //HttpClient client2 = new HttpClient();
+        //    //var responseMessage = await client2.GetAsync(url2);
+
+        //    //var jsonString = await responseMessage.Content.ReadAsStringAsync();
+        //    //UpdateProductListStatusVM values2 = JsonConvert.DeserializeObject<UpdateProductListStatusVM>(jsonString);
+
+        //    //values2.Status = false;
+        //    //var jsonCategory = JsonConvert.SerializeObject(values2);
+        //    //var content = new StringContent(jsonCategory, Encoding.UTF8, "application/json");
+        //    //var response = await client2.PutAsync(url2, content);
+
+        //    return Ok();
+        //}
+
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateList(int id, string listname, string listid)
+        {
+
+            if (!SessionCheck())
+            {
+                return RedirectToAction("Index", "Login", new { area = "" });
+            }
+            string name = "";
+
+            string url2 = "https://localhost:44344/api/ProductLists/" + id;
+            HttpClient client2 = new HttpClient();
+            var responseMessage = await client2.GetAsync(url2);
+
+            var jsonString = await responseMessage.Content.ReadAsStringAsync();
+            UpdateProductListStatusVM values2 = JsonConvert.DeserializeObject<UpdateProductListStatusVM>(jsonString);
+
+            values2.Status = false;
+
+
+            values2.Status = false;
+            var jsonCategory = JsonConvert.SerializeObject(values2);
+            var content = new StringContent(jsonCategory, Encoding.UTF8, "application/json");
+            var response = await client2.PutAsync(url2, content);
+
+
+            return RedirectToAction("Listview", new { name, listid, listname });
         }
 
     }
