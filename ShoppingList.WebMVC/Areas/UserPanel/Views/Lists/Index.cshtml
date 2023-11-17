@@ -1,69 +1,202 @@
 ﻿@using ShoppingList.WebMVC.Areas.AdminPanel.Models.ProductVM;
+@using ShoppingList.WebMVC.Areas.UserPanel.Models.ListsVM;
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
-@model List<ProductDetailDTOVM>
-<h1>Index</h1>
+@model MyListViewModel
 
-Liste ekleme sayfası
+
+
+
 
 
 
 
 <div class="container">
+    <div class="shadow-lg p-3 mb-5 bg-body-tertiary rounded my-4"><h2 class="text-center text-primary">@ViewBag.ListName -  @ViewBag.ListId </h2></div>
 
-    <div class="card my-2">
-        <div class="card-body">
-            <form method="get" id="filter">
-                <div class="form-group">
-                    <input id="productName" name="name" class="form-control" placeholder="Ürün Ara" value="@ViewBag.Name" />
+
+    <div class="row">
+
+        <div class="col-4">
+            <div class="card shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+                <div class="card-header">
+                    <h3>  Listene Ürün Ekle</h3>
+                    <div class="card-body">
+                        <form method="get" id="filter">
+                            <div class="form-group">
+                                <input id="productName" name="name" class="form-control" placeholder="Ürün Ara" value="@ViewBag.Name" />
+                                <input name="listid" value="@ViewBag.ListId" hidden />
+                                <input name="listname" value="@ViewBag.ListName" hidden />
+                            </div>
+                            <div class="form-group mt-2"><button class="btn btn-primary">Filtrele</button></div>
+
+                        </form>
+                        <table class="table table-striped my-2">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+
+                                    <th scope="col">Görsel</th>
+                                    <th scope="col">Ürün</th>
+                                    <th scope="col">Kategori</th>
+
+                                    <th scope="col">İşlem</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var product in Model.ProductDetailDTOVM)
+                                {
+                                    <form method="post" asp-action="Add">
+                                    <tr>
+                                        <th scope="row">@product.Id</th>
+
+                                        <td scope="row"><img src="@product.UrlImage" width="25"></td>
+                                        <td>@product.Name</td>
+                                        <td>@product.CategoryName</td>
+                                        <td>
+
+                                            <button class="btn btn-primary" asp-controller="Lists" asp-area="UserPanel" asp-action="Add" asp-route-id="@product.Id" asp-route-listid="@ViewBag.ListId" asp-route-listname="@ViewBag.ListName">Ekle</button>
+                                        </td>
+
+                                    </tr>
+                                    </form>
+                                }
+
+
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div class="form-group mt-2"><button class="btn btn-primary">Filtrele</button></div>
+            </div>
+        </div>
+        <div class="col-8">
+            <div class="card shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+                <div class="card-header">
+                    <h3> Alış Veriş Listeniz </h3>
+                    <div class="card-body">
+                        @{
+                            if (Model.ProductListsVM is not null)
+                            {
+                                
+                                    <button class="btn btn-success" asp-controller="Lists" asp-action="delete">Alışverişe Çık</button>
+                            }
+                        }
 
-            </form>
+                        <table class="table table-striped my-2">
+                            <thead>
+                                <tr>
+
+
+                                    <th scope="col">ProductId</th>
+                                    <th scope="col">Görsel</th>
+                                    <th scope="col">ProductName</th>
+                                    <th scope="col">ListId</th>
+                                    <th scope="col">Description</th>
+                                    <th scope="col">status</th>
+                                    <th scope="col">İşlem</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @{
+                                    if (TempData["ProductAddError"] is not null)
+                                    {
+
+                                        <div class="alert alert-danger" role="alert">
+                                            @TempData["ProductAddError"]
+                                        </div>
+                                    }
+
+                                    if (TempData["ProductListMessage"] is not null)
+                                    {
+
+                                        <div class="alert alert-danger" role="alert">
+                                            @TempData["ProductListMessage"]
+                                        </div>
+                                    }
+                                    else
+                                    {
+
+                                        @foreach (var productlist in Model.ProductListsVM)
+                                        {
+                                            string duzenle = ""; duzenle = "duzenle" + productlist.id;
+
+                                            @* burası düzenleme yapılırken modal olarak popup penceresi açacak. *@
+                                            <div class="modal fade" id="@duzenle" tabindex="-1" role="dialog" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Açıklama Ekle-@productlist.id - @productlist.ListId - @productlist.ListName</h5>
+                                                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form asp-action="Update"  method="post">
+                                                                <div class="mb-3">
+                                                                    <input class="form-control" type="text" required="" hidden="" readonly="" name="id" value="@productlist.id">
+                                                                    <input class="form-control" type="text" required="" hidden="" readonly="" name="listname" value="@productlist.ListName">
+                                                                    <input class="form-control" type="text" required="" hidden="" readonly="" name="listid" value="@productlist.ListId">
+                                                                    <img src="@productlist.ProductImageUrl" width="25">
+                                                                    <label class="col-form-label" for="recipient-name">@productlist.ProductName</label>
+                                                                </div>
+                                                                
+                                                                <div class="mb-3">
+                                                                    <label class="col-form-label" for="recipient-name">Açıklama Girin (Adet/Kg/Litre vs.)</label>
+                                                                    <input class="form-control" type="text" name="Description" value="@productlist.Description">
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Vazgeç</button>
+                                                                    <button class="btn btn-primary" type="submit">Güncelle</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+
+                                            <form method="post" asp-action="Add">
+                                            <tr>
+                                                <th scope="row">@productlist.id</th>
+                                                <td scope="row"><img src="@productlist.ProductImageUrl" width="25"></td>
+                                                <th scope="row">@productlist.ProductName</th>
+                                                <td>@productlist.ListId</td>
+                                                    @* <td scope="row"><img src="@productlist.UrlImage" width="25"></td> *@
+                                                <td>@productlist.Description</td>
+                                                <td>@productlist.Status</td>
+                                                <td>
+                                                    <a class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#@duzenle"><i class="icon-pencil"></i> Düzenle</a>
+                                                    
+
+                                                    <button class="btn btn-danger" asp-controller="Lists" asp-action="delete" asp-route-id="@productlist.id" asp-route-listid="@ViewBag.ListId" asp-route-listname="@ViewBag.ListName">Sil</button>
+
+                                                        @{
+                                                            TempData[productlist.id.ToString()] = @productlist.ListName;
+                                                        }
+                                                    
+                                                </td>
+
+                                            </tr>
+                                            </form>
+                                        }
+
+                                    }
+                                }
+
+
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
-
-    
-
-     <div class="card">
-        <div class="card-body">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-
-                        <th scope="col">Görsel</th>
-                        <th scope="col">Ürün Adı</th>
-                        <th scope="col">Kategori Adı</th>
-                        <th scope="col">İşlem</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var product in Model)
-                    {
-                        <tr>
-                            <th scope="row">@product.Id</th>
-
-                            <td scope="row"><img src="@product.UrlImage" width="25"></td>
-                            <td>@product.Name</td>
-                            <td>@product.CategoryName</td>
-                            <td>
-                                <a asp-action="Edit" asp-route-id="@product.Id" asp-controller="Products" asp-area="AdminPanel" class="link-warning link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Düzenle</a>
-                                |
-                                <a asp-action="Delete" asp-route-id="@product.Id" asp-controller="Products" asp-area="AdminPanel" class="link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Sil</a>
-                            </td>
-
-                        </tr>
-                    }
-
-
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>

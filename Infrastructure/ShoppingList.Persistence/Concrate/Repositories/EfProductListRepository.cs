@@ -19,6 +19,8 @@ namespace ShoppingList.Persistence.Concrate.Repositories
                 var result = from productlist in context.ProductLists
                              join product in context.Products
                              on productlist.ProductId equals product.Id
+                             join list in context.Lists
+                             on productlist.ListId equals list.Id
                              select new ProductListDetailDTO
                              {
                                  Id = productlist.Id,
@@ -26,7 +28,9 @@ namespace ShoppingList.Persistence.Concrate.Repositories
                                  ListId = productlist.ListId,
                                  Description = productlist.Description,
                                  ProductName=product.Name,
-                                 ProductImageUrl=product.UrlImage
+                                 ProductImageUrl=product.UrlImage,
+                                 Status = productlist.Status,
+                                 ListName=list.Name
                                  
 
                              };
