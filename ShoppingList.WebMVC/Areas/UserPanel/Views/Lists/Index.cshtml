@@ -15,7 +15,7 @@
 
 
 <div class="container">
-    <div class="shadow-lg p-3 mb-5 bg-body-tertiary rounded my-4"><h2 class="text-center text-primary">@ViewBag.ListName -  @ViewBag.ListId </h2></div>
+    <div class="shadow-lg p-3 mb-5 bg-body-tertiary rounded my-4"><h2 class="text-center text-primary">@ViewBag.ListName </h2></div>
 
 
     <div class="row">
@@ -92,14 +92,14 @@
                                 <tr>
 
 
-                                    <th scope="col">ProductId</th>
+                                   @*  <th scope="col">ProductId</th> *@
                                     <th scope="col">Görsel</th>
-                                    <th scope="col">ProductName</th>
-                                    <th scope="col">ListId</th>
-                                    <th scope="col">Description</th>
-                                    <th scope="col">status</th>
-                                    <th scope="col">İşlem</th>
-
+                                    <th scope="col">Ürün</th>
+                                   @*  <th scope="col">Kategori</th> *@
+                                    <th scope="col">Açıklama</th>
+                                   @*  <th scope="col">status</th> *@
+                                    <th scope="col">Güncelle</th>
+                                    <th scope="col">Sil</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -174,16 +174,17 @@
 
                                             <form method="post" asp-action="Add">
                                             <tr>
-                                                <th scope="row">@productlist.id</th>
+                                                    @* <th scope="row">@productlist.id</th>*@
                                                 <td scope="row"><img src="@productlist.ProductImageUrl" width="25"></td>
                                                 <th scope="row">@productlist.ProductName</th>
-                                                <td>@productlist.ListId</td>
+                                                @* <td>@productlist.ListId</td>*@
                                                     @* <td scope="row"><img src="@productlist.UrlImage" width="25"></td> *@
                                                 <td>@productlist.Description</td>
-                                                <td>@productlist.Status</td>
+                                                @* <td>@productlist.Status</td>*@
                                                 <td>
-                                                    <a class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#@duzenle"><i class="icon-pencil"></i> Düzenle</a>
-                                                    
+                                                    <a class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#@duzenle"><i class="icon-pencil"></i> Açıklama Ekle</a>
+                                                    </td>
+                                                    <td>
 
                                                     <button class="btn btn-danger" asp-controller="Lists" asp-action="delete" asp-route-id="@productlist.id" asp-route-listid="@ViewBag.ListId" asp-route-listname="@ViewBag.ListName">Sil</button>
 
