@@ -19,33 +19,30 @@ namespace ShoppingList.WebApi.Controllers
         {
             if (file != null)
             {
-                string uploadPath = Path.Combine( "Uploads", file.FileName);
+                var allowedExtensions = new[] { ".png", ".jpg", ".jpeg" };
+                var fileExtension = Path.GetExtension(file.FileName).ToLower();
 
-                using (var stream = new FileStream(uploadPath, FileMode.Create))
+                if (allowedExtensions.Contains(fileExtension))
                 {
-                  await  file.CopyToAsync(stream);
 
+                    string uploadPath = Path.Combine("Uploads", file.FileName);
+
+                    using (var stream = new FileStream(uploadPath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+
+                    }
+
+                    string imageUrl = "https://localhost:44344/Uploads/" + file.FileName; // Örnek URL oluşturumu
+                    return Ok(new { imageUrl });
                 }
-
-                string imageUrl = "https://localhost:44344/Uploads/" + file.FileName; // Örnek URL oluşturumu
-                return Ok(new { imageUrl });
+                else
+                {
+                    return BadRequest("Uygun dosya formatı değil. Lütfen png, jpg veya jpeg formatındaki dosyaları yükleyin.");
+                }
             }
             return BadRequest("Dosya eksik veya hatalı.");
 
-
-
-            //if (file != null)
-            //{
-
-            //    string uploadPath = Path.Combine(_env.WebRootPath, "Images", uploadPhoto.FileName);
-
-            //    using (var stream = new FileStream(uploadPath, FileMode.Create))
-            //    {
-            //        await uploadPhoto.CopyToAsync(stream);
-
-            //    }
-            //    TempData["Error"] = addProductVM.UrlImage;
-            //}
 
         }
     }
